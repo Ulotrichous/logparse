@@ -100,9 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CSRF_TRUSTED_ORIGINS=['logparse.up.railway.app', '*.railway.app']
-
-SECURE_SSL_REDIRECT = True
+CSRF_TRUSTED_ORIGINS=['https://logparse.up.railway.app']
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
