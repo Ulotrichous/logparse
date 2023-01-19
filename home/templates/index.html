@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logparse - SAMP Chatlog Parser</title>
+    <link href="https://fonts.googleapis.com/css2?family=Proxima+Nova&display=swap" rel="stylesheet">
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.0/dist/umd/popper.min.js"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <style>
+        body {
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: 'Proxima Nova', sans-serif;
+        }
+
+        header {
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav.navbar {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        nav.navbar a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        h3 {
+            font-weight: 600;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        form {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        form .input-group {
+            width: 100%;
+            max-width: 30rem;
+        }
+
+        form .input-group .btn {
+            margin-left: 1rem;
+        }
+
+        .border {
+            border: 1px solid #ccc;
+            border-radius: 0.25rem;
+            overflow: auto;
+            padding: 1rem;
+        }
+
+        pre {
+            font-size: 1.05rem;
+            overflow: auto;
+            max-height: 400px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Proxima Nova', sans-serif;
+        }
+
+        footer {
+            color: #808080;
+            padding: 1rem 0;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="{% url 'index' %}">Logparse</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h3>Upload Chatlog</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="file" name="document" class="form-control">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-success">Upload file</button>
+                </div>
+            </div>
+        </form>
+        <div class="border">
+            <pre id="result">{{ result }}</pre>
+        </div>
+        <div>
+            <button id="copy-selected-btn" class="btn btn-primary btn-sm mt-3"> <i class="fa fa-copy"></i> Copy Selected
+                Text</button>
+        </div>
+    </div>
+    <footer>&copy; Copyright 2022 Jupang</footer>
+    {% if show_warning %}
+    <div class="modal" id="file-missing-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Warning</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tolong masukkan file terlebih dahulu!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var jq = jQuery.noConflict();
+        jq(document).ready(function () {
+            jq('#file-missing-modal').modal('show');
+        });
+    </script>
+    {% endif %}
+</body>
+
+<script>
+    let copySelectedBtn = document.getElementById('copy-selected-btn');
+    let copyAllBtn = document.getElementById('copy-all-btn');
+    let result = document.getElementById('result');
+
+    copySelectedBtn.addEventListener('click', function () {
+        if (window.getSelection().toString()) {
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.log('Unable to copy selected text');
+            }
+        } else {
+            console.log('No text selected');
+        }
+    });
+</script>
+
+</html>
