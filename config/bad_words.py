@@ -62,6 +62,6 @@ BAD_WORDS = [
     'RED:',
     'HEAL:',
     'TIP:',
-    'Harap diam posisi selama 3 detik!'
-    'Animation telah direset!'
+    'Harap diam posisi selama 3 detik!',
+    'Animation telah direset!',
 ]
